@@ -20,10 +20,10 @@ THETA_tuta[,2] <-rep(c(rep(1,KK)%*%t(mm)),KK);THETA_tuta[,1] <-c(rep(1,KK*KK)%*%
 THETA_tuta <- cbind(rep(1,nrow(THETA_tuta)),THETA_tuta)
 theta_square <- THETA_tuta[,2:4]*THETA_tuta[,2:4]
 theta_tmp <- rowSums(theta_square)/2
-xx <- seq(0.001,0.01,0.001);
+xx <- seq(0,0.001,0.0001);
 xx1 <- matrix(0,nrow = length(xx)*length(xx)*length(xx),ncol=3);xx1[,3] <- rep(xx,length(xx)*length(xx));xx1[,2] <- rep(c(rep(1,length(xx))%*%t(xx)),length(xx))
 xx1[,1] <- c(rep(1,length(xx)*length(xx))%*%t(xx))
-lammda <- c(rep(0.006,20),rep(0,9),rep(0,10))*N;
+lammda <- c(rep(xx1[cond,1],20),rep(xx1[cond,2],10),rep(xx1[cond,3],10))*N;
 
 soft <- function(a,b,K){
   for(k in 1:K){
@@ -35,14 +35,13 @@ soft <- function(a,b,K){
 }
 response <- t(response);
 A_0 <- t(D_initial)
-temp_0 <- like_temp_0 <- THETA_tuta%*%A_0
+temp_0 <- THETA_tuta%*%A_0
 cc1 <- exp(like_temp_0%*%response-theta_tmp-rowSums(log(1+exp(like_temp_0))))
 theta_post <- sweep(cc1, 2, colSums(cc1), "/") 
-penalty<- -sum(sweep(A_0,2,lammda,"*"))
+
 th0 <- rowSums(theta_post);
 th1 <- THETA_tuta[,2]*th0;th2 <- THETA_tuta[,3]*th0;th3 <- THETA_tuta[,4]*th0;
 uu <- theta_post%*%t(response);uu0 <-colSums(uu);uu1 <-colSums(THETA_tuta[,2]*uu);uu2 <-colSums(THETA_tuta[,3]*uu);uu3 <-colSums(THETA_tuta[,4]*uu);
-frac_00 <- log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp)))
 tol <- 1e-8
 fan_0 <- sqrt(sum(A_0*A_0))
 ss <- rep(0,502);ss[1] <- A_0[2,1]
@@ -158,6 +157,6 @@ tt
 bic <- -2*sum(log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp))))+log(N)*(J*K)
 bic1 <- -2*sum(log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp))))+log(N)*(J*K)+2*sum(lammda*t(A_0))
 RESULT <- rbind(c(bic,0,0,0),c(bic1,0,0,0),t(A_0))
-write.csv(RESULT, file ='lammda00600.csv')
+write.csv(RESULT, file =paste0('dim_j',cond,'.csv'))
 
 
