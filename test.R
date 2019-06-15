@@ -13,7 +13,8 @@ Q <- matrix(1,J,K);Q[J,2:3] <- 0;Q[(J-1),3] <- 0;
 ##initial value###
 A_initial <- matrix(0,J,K);A_initial[,1] <- runif(J,1,2);A_initial[,2] <- runif(J,1,2);A_initial[,3] <- runif(J,1,2);
 A_initial <- A_initial*Q;
-d_initial <- rnorm(J,0,1);D_initial <- cbind(d_initial,A_initial);
+d_initial <-sort(rnorm(J,0,1))[rank(colMeans(response))];
+D_initial <- cbind(d_initial,A_initial);
 KK <- 20;theta_min <- -4;theta_max <- 4;mm1 <- seq(theta_min,theta_max,(theta_max-theta_min)/KK);mm <- mm1[-1]
 THETA_tuta <- matrix(0,nrow=KK*KK*KK,ncol=3);THETA_tuta[,3] <- rep(mm,KK*KK);
 THETA_tuta[,2] <-rep(c(rep(1,KK)%*%t(mm)),KK);THETA_tuta[,1] <-c(rep(1,KK*KK)%*%t(mm))#Õë¶ÔK <- 3µÄtheta·Ö¿é,»ñÈ¡thetaµÄ·Ö¿é
