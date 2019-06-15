@@ -9,7 +9,7 @@ K = 3
 
 response <- w;
 ###my code###
-Q <- matrix(1,J,K);Q[J,2:3] <- 0;Q[(J-1),3] <- 0;
+Q <- matrix(1,J,K);Q[36,2] <- 0;Q[c(3,36),3] <- 0;
 ##initial value###
 A_initial <- matrix(0,J,K);A_initial[,1] <- runif(J,1,2);A_initial[,2] <- runif(J,1,2);A_initial[,3] <- runif(J,1,2);
 A_initial <- A_initial*Q;
@@ -48,12 +48,14 @@ fan_0 <- sqrt(sum(A_0*A_0))
 ss <- rep(0,502);ss[1] <- A_0[2,1]
 timstart <- Sys.time()
 
+
 xx <- 1/(1+exp(-temp_0))
 A_grad <- uu0-colSums(th0* xx)
 A_grad_2 <- -colSums(th0*xx*(1-xx))
 d_tuta <- A_0[1,]-A_grad/A_grad_2
 temp_1 <- THETA_tuta%*%rbind(d_tuta,A_0[-1,])
 A_0[1,] <- d_tuta
+
 for(k in 1:20){
   xx <- 1/(1+exp(-temp_1))
   A_grad <- uu1-colSums(th1* xx)
@@ -70,35 +72,26 @@ for(k in 1:20){
   xx <- 1/(1+exp(-temp_1))
   A_grad <- uu2-colSums(th2* xx)
   A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,2])
-  A_0[3,1:(J-1)] <-A_0[3,1:(J-1)]-(A_grad/A_grad_2)[1:(J-1)];
+  A_0[3,-36] <-A_0[3,-36]-(A_grad/A_grad_2)[-36];
   temp_1 <- THETA_tuta%*%A_0
 }
 xx <- 1/(1+exp(-temp_1))
 A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,2])
 temp_1 <- THETA_tuta%*%A_0
-A_0[3,1:(J-1)] <- soft(A_0[3,1:(J-1)],(-lammda/A_grad_2)[1:(J-1)],J-1)
+A_0[3,-36] <- soft(A_0[3,-36],(-lammda/A_grad_2)[-36],J-1)
 
 for(k in 1:20){
   xx <- 1/(1+exp(-temp_1))
   A_grad <- uu3-colSums(th3* xx)
   A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,3])
-  A_0[4,1:(J-2)] <-A_0[4,1:(J-2)]-(A_grad/A_grad_2)[1:(J-2)];
+  A_0[4,-c(3,36)] <-A_0[4,-c(3,36)]-(A_grad/A_grad_2)[-c(3,36)];
   temp_1 <- THETA_tuta%*%A_0
 }
 xx <- 1/(1+exp(-temp_1))
 A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,3])
-A_0[4,1:(J-2)] <- soft(A_0[4,1:(J-2)],(-lammda/A_grad_2)[1:(J-2)],J-2)
+A_0[4,-c(3,36)] <- soft(A_0[4,-c(3,36)],(-lammda/A_grad_2)[-c(3,36)],J-2)
 
 ss[2] <- A_0[2,1]
-
-
-
-
-
-
-
-
-
 
 ####while####
 for(m in 1:500){
@@ -115,6 +108,7 @@ for(m in 1:500){
   d_tuta <- A_0[1,]-A_grad/A_grad_2
   temp_1 <- THETA_tuta%*%rbind(d_tuta,A_0[-1,])
   A_0[1,] <- d_tuta
+  
   for(k in 1:20){
     xx <- 1/(1+exp(-temp_1))
     A_grad <- uu1-colSums(th1* xx)
@@ -131,24 +125,24 @@ for(m in 1:500){
     xx <- 1/(1+exp(-temp_1))
     A_grad <- uu2-colSums(th2* xx)
     A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,2])
-    A_0[3,1:(J-1)] <-A_0[3,1:(J-1)]-(A_grad/A_grad_2)[1:(J-1)];
+    A_0[3,-36] <-A_0[3,-36]-(A_grad/A_grad_2)[-36];
     temp_1 <- THETA_tuta%*%A_0
   }
   xx <- 1/(1+exp(-temp_1))
   A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,2])
   temp_1 <- THETA_tuta%*%A_0
-  A_0[3,1:(J-1)] <- soft(A_0[3,1:(J-1)],(-lammda/A_grad_2)[1:(J-1)],J-1)
+  A_0[3,-36] <- soft(A_0[3,-36],(-lammda/A_grad_2)[-36],J-1)
   
   for(k in 1:20){
     xx <- 1/(1+exp(-temp_1))
     A_grad <- uu3-colSums(th3* xx)
     A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,3])
-    A_0[4,1:(J-2)] <-A_0[4,1:(J-2)]-(A_grad/A_grad_2)[1:(J-2)];
+    A_0[4,-c(3,36)] <-A_0[4,-c(3,36)]-(A_grad/A_grad_2)[-c(3,36)];
     temp_1 <- THETA_tuta%*%A_0
   }
   xx <- 1/(1+exp(-temp_1))
   A_grad_2 <- -colSums(th0*xx*(1-xx)*theta_square[,3])
-  A_0[4,1:(J-2)] <- soft(A_0[4,1:(J-2)],(-lammda/A_grad_2)[-((J-1):J)],J-2)
+  A_0[4,-c(3,36)] <- soft(A_0[4,-c(3,36)],(-lammda/A_grad_2)[-c(3,36)],J-2)
   ss[m+2] <- A_0[2,1]
 }
 
