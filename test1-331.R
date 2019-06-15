@@ -152,6 +152,6 @@ tt
 bic <- -2*sum(log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp))))+log(N)*(J*K)
 bic1 <- -2*sum(log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp))))+log(N)*(J*K)+2*sum(lammda*t(A_0))
 RESULT <- rbind(c(bic,0,0,0),c(bic1,0,0,0),t(A_0))
-write.csv(RESULT, file =paste0('dim_j',cond,'.csv'))
+write.csv(RESULT, file =paste0('dim_j',cond+1000,'.csv'))
 
 
