@@ -13,5 +13,5 @@
 module load R
 
 #Command to execute R code
-R CMD BATCH --no-save --vanilla test.R test1001eout
+R CMD BATCH --no-save --vanilla test1-331.R test1001eout
 # End of script
