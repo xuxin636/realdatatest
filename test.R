@@ -21,10 +21,10 @@ THETA_tuta[,2] <-rep(c(rep(1,KK)%*%t(mm)),KK);THETA_tuta[,1] <-c(rep(1,KK*KK)%*%
 THETA_tuta <- cbind(rep(1,nrow(THETA_tuta)),THETA_tuta)
 theta_square <- THETA_tuta[,2:4]*THETA_tuta[,2:4]
 theta_tmp <- rowSums(theta_square)/2
-xx <- seq(0,0.001,0.0001);
-xx1 <- matrix(0,nrow = length(xx)*length(xx)*length(xx),ncol=3);xx1[,3] <- rep(xx,length(xx)*length(xx));xx1[,2] <- rep(c(rep(1,length(xx))%*%t(xx)),length(xx))
-xx1[,1] <- c(rep(1,length(xx)*length(xx))%*%t(xx))
-lammda <- c(rep(xx1[cond,1],20),rep(xx1[cond,2],10),rep(xx1[cond,3],10))*N;
+xx <- seq(0,0.03,0.0002);
+xx1 <- matrix(0,nrow = length(xx)*length(xx),ncol=2);xx1[,2] <- rep(xx,length(xx));
+xx1[,1] <- c(rep(1,length(xx))%*%t(xx))
+lammda <- c(rep(xx1[cond,1],20),rep(xx1[cond,2],20))*N;
 
 soft <- function(a,b,K){
   for(k in 1:K){
