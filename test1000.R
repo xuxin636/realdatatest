@@ -1,5 +1,6 @@
 library(mvtnorm)
 cond <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
+cond<-cond+1000
 E <- as.matrix(read.csv("/rigel/home/xx2319/realdatatest/0-1categoryofdata.csv"))
 ww <- 40
 w <- E[,2:(ww+1)]
@@ -21,10 +22,10 @@ THETA_tuta[,2] <-rep(c(rep(1,KK)%*%t(mm)),KK);THETA_tuta[,1] <-c(rep(1,KK*KK)%*%
 THETA_tuta <- cbind(rep(1,nrow(THETA_tuta)),THETA_tuta)
 theta_square <- THETA_tuta[,2:4]*THETA_tuta[,2:4]
 theta_tmp <- rowSums(theta_square)/2
-xx <- seq(0,0.001,0.0001);
-xx1 <- matrix(0,nrow = length(xx)*length(xx)*length(xx),ncol=3);xx1[,3] <- rep(xx,length(xx)*length(xx));xx1[,2] <- rep(c(rep(1,length(xx))%*%t(xx)),length(xx))
-xx1[,1] <- c(rep(1,length(xx)*length(xx))%*%t(xx))
-lammda <- c(rep(xx1[cond+1000,1],20),rep(xx1[cond+1000,2],10),rep(xx1[cond+1000,3],10))*N;
+xx <- seq(0,0.03,0.0002);
+xx1 <- matrix(0,nrow = length(xx)*length(xx),ncol=2);xx1[,2] <- rep(xx,length(xx));
+xx1[,1] <- c(rep(1,length(xx))%*%t(xx))
+lammda <- c(rep(xx1[cond,1],20),rep(xx1[cond,2],20))*N;
 
 soft <- function(a,b,K){
   for(k in 1:K){
@@ -152,6 +153,6 @@ tt
 bic <- -2*sum(log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp))))+log(N)*(J*K)
 bic1 <- -2*sum(log(colSums(exp(temp_0%*%response-rowSums(log(1+exp(temp_0)))-theta_tmp))))+log(N)*(J*K)+2*sum(lammda*t(A_0))
 RESULT <- rbind(c(bic,0,0,0),c(bic1,0,0,0),t(A_0))
-write.csv(RESULT, file =paste0('dim_j',cond+1000,'.csv'))
+write.csv(RESULT, file =paste0('dim_j',cond,'.csv'))
 
 
