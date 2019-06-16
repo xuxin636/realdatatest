@@ -1,5 +1,5 @@
 #!/bin/sh
-#test1-1000.sh
+#test.sh
 #Slurm script to run R program that generates graph of discrete Delta-hedging call
 
 #Slurm directives
@@ -13,5 +13,5 @@
 module load R
 
 #Command to execute R code
-R CMD BATCH --no-save --vanilla test.R test1eout
+R CMD BATCH --no-save --vanilla test.R testeout
 # End of script
