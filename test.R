@@ -29,7 +29,10 @@ lammda <- c(rep(xx1[cond,1],20),rep(xx1[cond,2],20))*N;
 soft <- function(a,b,K){
   for(k in 1:K){
     if(a[k]>0&a[k]>b[k]){a[k] <- a[k]-b[k]}
-    else{a[k] <- 0}
+    else{
+    if(a[k]<0&a[k]<-b[k]){a[k] <- a[k]+b[k]}
+      else{a[k]=0}
+    }
     
   }
   return(a)
