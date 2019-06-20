@@ -12,7 +12,7 @@ response <- w;
 ###my code###
 ##initial value###
 A_initial <- matrix(0,J,K);A_initial[,1] <- runif(J,1,2);A_initial[,2] <- runif(J,1,2);A_initial[,3] <- runif(J,1,2);
-A_initial <- A_initial*Q;
+A_initial <- A_initial;
 d_initial <-sort(rnorm(J,0,1))[rank(colMeans(response))];
 D_initial <- cbind(d_initial,A_initial);
 KK <- 20;theta_min <- -4;theta_max <- 4;mm1 <- seq(theta_min,theta_max,(theta_max-theta_min)/KK);mm <- mm1[-1]
