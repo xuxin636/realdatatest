@@ -77,7 +77,7 @@ for(k in 2:(K+1)){
 ss[2] <- A_0[2,1]
 
 ####while####
-for(m in 1:200){
+for(m in 1:300){
   temp_0 <- THETA_tuta%*%A_0
   cc1 <- exp(temp_0%*%response-theta_tmp-rowSums(log(1+exp(temp_0))))
   theta_post <- sweep(cc1, 2, colSums(cc1), "/") 
